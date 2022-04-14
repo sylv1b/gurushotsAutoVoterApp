@@ -195,9 +195,9 @@ export const fetchChallengesAndVote = async () => {
     }
     const activesChallenges = await getActiveChallenges()
     const { challenges } = activesChallenges
+    const now = Math.floor(Date.now() / 1000)
     for (challenge of challenges) {
-        console.log(challenge.member.ranking.exposure.exposure_factor)
-        if (challenge.member.ranking.exposure.exposure_factor < 100) {
+        if (challenge.member.ranking.exposure.exposure_factor < 100 && challenge.start_time < now) {
             const voteImages = await getVoteImages(challenge)
             const vote = await submitVotes(voteImages)
         }
