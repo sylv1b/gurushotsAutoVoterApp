@@ -16,8 +16,8 @@ export default function ChallengeCard({ challenge, forceRefresh }) {
 
     const needVote = challenge.member.ranking.exposure.exposure_factor < 100
 
-    const boostState = challenge.member.boost.state
-    const boostAvailable = boostState !== 'USED' && boostState !== 'EXPIRED' && boostState !== 'LOCKED'
+    const { boost } = challenge.member
+    const boostAvailable = boost.state === 'AVAILABLE' && boost.timeout
 
     const vote = async () => {
         setIsVoting(true)

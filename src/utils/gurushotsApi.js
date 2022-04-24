@@ -129,6 +129,7 @@ export const getVoteImages = async (challenge) => {
 
 export const submitVotes = async (voteImages) => {
     const { challenge, voting, images } = voteImages;
+    if (!images.length) return;
     const id = `c_id=${challenge.id}`
     let votedImages = ''
 
@@ -197,6 +198,10 @@ export const fetchChallengesAndVote = async () => {
     const { challenges } = activesChallenges
     const now = Math.floor(Date.now() / 1000)
     for (challenge of challenges) {
+        const { boost } = challenge.member
+        if (boost.state === 'AVAILABLE' && boost.timeout) {
+            console.log('Boost available for challenge ' + challenge.title)
+        }
         if (challenge.member.ranking.exposure.exposure_factor < 100 && challenge.start_time < now) {
             const voteImages = await getVoteImages(challenge)
             const vote = await submitVotes(voteImages)
