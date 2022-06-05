@@ -10,6 +10,9 @@ let user = {
     success: true
 }
 
+let userAgent = 'GuruShotsIOS/2.11.6 (com.gurushots.app; build:519; iOS 15.5.0) Alamofire/5.0.0-rc.2';
+let appVersion = '2.11.6'
+
 export const login = async (user, password) => {
     console.log('start login')
     const data = `login=${encodeURIComponent(user)}&password=${password}`;
@@ -28,9 +31,9 @@ export const login = async (user, password) => {
             'x-api-version': '20',
             'content-type': 'application/x-www-form-urlencoded; charset=utf-8',
             'x-env': 'IOS',
-            'user-agent': 'GuruShotsIOS/2.11.3 (com.gurushots.app; build:507; iOS 15.3.0) Alamofire/5.0.0-rc.2',
+            'user-agent': userAgent,
             'content-length': '50',
-            'x-app-version': '2.11.3',
+            'x-app-version': appVersion,
             'connection': 'keep-alive',
             'x-brand': 'Apple',
             'cookie': '_clck=av9mgm|1|f0a|0; _fbp=fb.1.1648914330061.2139166727; _uetvid=ecada8d0b29b11ec9459df91e6b99083; _ga=GA1.2.2079901456.1648914330; _ga_PSTKC2YRVK=GS1.1.1648914329.1.0.1648914329.60; mp_web_PoU9JZO1jl_mixpanel=%7B%22distinct_id%22%3A%20%2217feaf3f019ac0-01728b3cf9cec6-744c1451-4a574-17feaf3f01aac2%22%2C%22%24device_id%22%3A%20%2217feaf3f019ac0-01728b3cf9cec6-744c1451-4a574-17feaf3f01aac2%22%2C%22%24initial_referrer%22%3A%20%22%24direct%22%2C%22%24initial_referring_domain%22%3A%20%22%24direct%22%7D; _gcl_au=1.1.254784595.1648914329; _hjSessionUser_2610047=eyJpZCI6IjFjODU1Mzk3LWY5YzMtNWU0Mi1iYzBjLTFlNTdiNjJkZTU0MyIsImNyZWF0ZWQiOjE2NDg5MTQzMjg3MTAsImV4aXN0aW5nIjpmYWxzZX0=',
@@ -66,9 +69,9 @@ export const getActiveChallenges = async () => {
             'x-api-version': '20',
             'accept-language': 'fr-SE;q=1.0, en-SE;q=0.9, sv-SE;q=0.8, es-SE;q=0.7',
             'x-env': 'IOS',
-            'user-agent': 'GuruShotsIOS/2.11.3 (com.gurushots.app; build:507; iOS 15.3.0) Alamofire/5.0.0-rc.2',
+            'user-agent': userAgent,
             'content-length': '0',
-            'x-app-version': '2.11.3',
+            'x-app-version': appVersion,
             'connection': 'keep-alive',
             'accept': '*/*',
             'x-brand': 'Apple',
@@ -105,9 +108,9 @@ export const getVoteImages = async (challenge) => {
             'x-api-version': '20',
             'accept-encoding': 'br;q=1.0, gzip;q=0.9, deflate;q=0.8',
             'x-env': 'IOS',
-            'user-agent': 'GuruShotsIOS/2.11.3 (com.gurushots.app; build:507; iOS 15.3.0) Alamofire/5.0.0-rc.2',
+            'user-agent': userAgent,
             'content-length': data.length,
-            'x-app-version': '2.11.3',
+            'x-app-version': appVersion,
             'connection': 'keep-alive',
             'content-type': 'application/x-www-form-urlencoded; charset=utf-8',
             'x-brand': 'Apple',
@@ -163,9 +166,9 @@ export const submitVotes = async (voteImages) => {
             'x-api-version': '20',
             'accept-encoding': 'br;q=1.0, gzip;q=0.9, deflate;q=0.8',
             'x-env': 'IOS',
-            'user-agent': 'GuruShotsIOS/2.11.3 (com.gurushots.app; build:507; iOS 15.3.0) Alamofire/5.0.0-rc.2',
+            'user-agent': userAgent,
             'content-length': data.length,
-            'x-app-version': '2.11.3',
+            'x-app-version': appVersion,
             'connection': 'keep-alive',
             'content-type': 'application/x-www-form-urlencoded; charset=utf-8',
             'x-brand': 'Apple',
