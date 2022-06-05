@@ -54,7 +54,7 @@ export const login = async (user, password) => {
 }
 
 
-export const getActiveChallenges = async () => {
+export const getActiveChallenges = async (user) => {
     console.log('getting active challenges')
     var config = {
         method: 'post',
@@ -88,7 +88,7 @@ export const getActiveChallenges = async () => {
         });
 }
 
-export const getVoteImages = async (challenge) => {
+export const getVoteImages = async (challenge, user) => {
     console.log(`getting vote image of challenge ${challenge.title} ${challenge.url}`)
     var axios = require('axios');
     var data = `limit=100&url=${challenge.url}`;
@@ -130,7 +130,7 @@ export const getVoteImages = async (challenge) => {
 
 }
 
-export const submitVotes = async (voteImages) => {
+export const submitVotes = async (voteImages, user) => {
     const { challenge, voting, images } = voteImages;
     if (!images.length) return;
     const id = `c_id=${challenge.id}`
@@ -192,7 +192,7 @@ export const submitVotes = async (voteImages) => {
 }
 
 
-export const fetchChallengesAndVote = async () => {
+export const fetchChallengesAndVote = async (user) => {
     if (!user.token) {
         const userLogin = await login('sbro@me.com', '4gJhnojcBH7EDnmqf7aby')
         user = userLogin
