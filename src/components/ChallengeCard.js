@@ -12,7 +12,7 @@ export default function ChallengeCard({ challenge, forceRefresh }) {
     const WIDTH = width - (MARGIN * 2)
     const { entries } = challenge.member.ranking
 
-    console.log(entries)
+    console.log('ChallengeCard', challenge)
 
     const [isVoting, setIsVoting] = useState(false)
 
@@ -59,6 +59,7 @@ export default function ChallengeCard({ challenge, forceRefresh }) {
                 <Image source={{ uri: `https://photos.gurushots.com/unsafe/500x500/${member.id}/3_${id}.jpg` }} style={{ width: '100%', height: 200 }} />
                 <View style={{ position: 'absolute', top: 0, left: 0, width: WIDTH, padding: 6, backgroundColor: 'rgba(0,0,0,0.5)' }}>
                     <Text style={{ fontWeight: 'bold', color: colors.isabelline }}>{challenge.title}</Text>
+                    <Text style={{ fontSize: 9, color: colors.isabelline }}>by guru {challenge.guru_info.name} ({challenge.guru_info.member_status_name})</Text>
                 </View>
             </View>
             <View style={{ flexDirection: 'row', borderBottomLeftRadius: 2, borderBottomRightRadius: 2, overflow: 'hidden', backgroundColor: colors.vividTangerine }}>
