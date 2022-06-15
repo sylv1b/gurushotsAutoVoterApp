@@ -81,8 +81,8 @@ export default function Home() {
                 data={challenges.challenges ? challenges.challenges.sort((a, b) => a.close_time - b.close_time) : []}
                 renderItem={({ item }) => <ChallengeCard challenge={item} forceRefresh={(b) => setForceRefresh(b)} />}
                 keyExtractor={item => item.id}
-                ItemSeparatorComponent={() => <View style={{ height: 10 }} />}
-                ListHeaderComponent={header}
+                //ItemSeparatorComponent={() => <View style={{ height: 10, backgroundColor: colors.polishedPine }} />}
+                //ListHeaderComponent={header}
                 ListFooterComponent={footer}
                 refreshControl={<RefreshControl refreshing={refreshing} onRefresh={() => {
                     getActiveChallenges(user).then((challenges) => {

@@ -3,9 +3,7 @@ import { Platform } from 'react-native'
 import axios from 'axios';
 import DeviceInfo from 'react-native-device-info';
 
-let userAgent = 'GuruShotsIOS/2.11.6 (com.gurushots.app; build:519; iOS 15.5.0) Alamofire/5.0.0-rc.2';
-let appVersion = '2.11.6'
-let apiVersion = '20'
+
 
 export const setUser = async (user) => {
     try {
@@ -44,6 +42,9 @@ export const deleteUser = async () => {
 }
 
 export const setupAxios = async () => {
+    let userAgent = 'GuruShotsIOS/2.11.6 (com.gurushots.app; build:519; iOS 15.5.0) Alamofire/5.0.0-rc.2';
+    let appVersion = Platform.OS === 'ios' ? '2.11.6' : '5.20.1'
+    let apiVersion = '20'
 
     const headers = {
         'host': 'api.gurushots.com',
@@ -51,7 +52,6 @@ export const setupAxios = async () => {
         'x-device': Platform.OS === 'ios' ? 'iPhone' : 'Android',
         'x-requested-with': 'XMLHttpRequest',
         'x-model': DeviceInfo.getDeviceId(),
-        // 'x-token': user.token,
         'accept-language': 'en-US',
         'x-api-version': apiVersion,
         'accept-encoding': 'br;q=1.0, gzip;q=0.9, deflate;q=0.8',
