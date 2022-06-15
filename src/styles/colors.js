@@ -4,7 +4,9 @@ const colors = {
     mistyRose: "#eed2cc",
     isabelline: "#fbf7f4",
     brownSugar: "#a1683a",
-    text: '#654027'
+    text: '#654027',
+    darkGrey: 'rgb(30,30,30)',
+    lightGrey: 'rgb(50, 50, 50)',
 }
 
 export default colors

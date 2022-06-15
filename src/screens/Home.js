@@ -75,7 +75,7 @@ export default function Home() {
     return (
         <View style={{
             flex: 1,
-            backgroundColor: colors.isabelline,
+            backgroundColor: isDark ? colors.darkGrey : colors.isabelline,
         }}>
             <FlatList
                 data={challenges.challenges ? challenges.challenges.sort((a, b) => a.close_time - b.close_time) : []}
