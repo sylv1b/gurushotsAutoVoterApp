@@ -44,8 +44,8 @@ export default function ChallengeCard({ challenge, forceRefresh }) {
                     onPress={() => vote()}
                     style={{
                         position: 'absolute',
-                        right: 4,
-                        bottom: 4,
+                        right: 6,
+                        bottom: 6,
                         padding: 4,
                         backgroundColor: 'green',
                         justifyContent: 'center',
@@ -53,7 +53,13 @@ export default function ChallengeCard({ challenge, forceRefresh }) {
                         borderRadius: 4
                     }}
                     disabled={isVoting}>
-                    <Text style={{ color: 'white', fontSize: 8 }}>Vote </Text>
+                    <Text style={{
+                        color: 'white',
+                        fontSize: 10,
+                        padding: 4,
+                        marginBottom: 2,
+                        textAlign: 'center',
+                    }}>Vote </Text>
                 </TouchableOpacity>}
 
             </View>

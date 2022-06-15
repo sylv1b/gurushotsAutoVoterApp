@@ -8,9 +8,7 @@
 
 import React from 'react';
 import type { Node } from 'react';
-import {
-  SafeAreaView,
-} from 'react-native';
+import { setupAxios } from './src/utils/setAuthToken';
 
 import { NavigationContainer } from '@react-navigation/native';
 
@@ -19,6 +17,7 @@ import { Provider } from 'react-redux';
 import store from './src/store/reducers/store';
 
 const App: () => Node = () => {
+  setupAxios()
   return (
     <Provider store={store}>
       <NavigationContainer>

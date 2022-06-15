@@ -2,8 +2,15 @@ import { View, Text, FlatList, TouchableOpacity, RefreshControl, Appearance, Act
 import React, { useEffect, useState } from 'react'
 import { fetchChallengesAndVote, getActiveChallenges } from '../utils/gurushotsApi'
 import ChallengeCard from '../components/ChallengeCard'
+import { useSelector, useDispatch } from 'react-redux'
+import colors from '../styles/colors'
+import {
+    TextField,
+    Button
+} from '../components/shared'
 
 export default function Home() {
+    const { user } = useSelector(state => state.auth)
     const [challenges, setChallenges] = useState({})
     const [loading, setLoading] = useState(true)
     const [refreshing, setRefreshing] = useState(false)
@@ -12,11 +19,9 @@ export default function Home() {
     const [forceRefresh, setForceRefresh] = useState(false)
     const isDark = colorScheme === 'dark';
 
-
-
     useEffect(() => {
         if (!challenges.challenges || forceRefresh) {
-            getActiveChallenges()
+            getActiveChallenges(user)
                 .then(challenges => {
                     setChallenges(challenges)
                     setLoading(false)
@@ -29,8 +34,8 @@ export default function Home() {
     const voteToAllChallenges = async () => {
         setVoting(true)
         setLoading(true)
-        fetchChallengesAndVote().then(res => {
-            getActiveChallenges().then((challenges) => {
+        fetchChallengesAndVote(user).then(res => {
+            getActiveChallenges(user).then((challenges) => {
                 setChallenges(challenges)
                 setLoading(false)
                 setVoting(false)
@@ -42,13 +47,13 @@ export default function Home() {
         <View style={{ paddingHorizontal: 8, marginVertical: 12 }}>
             <View style={{ flexDirection: 'row', height: 60, justifyContent: 'space-between', alignItems: 'center', }}>
                 <Text style={{ fontSize: 18, fontWeight: 'bold', color: isDark ? 'white' : 'black' }}>
-                    {loading || refreshing ? voting ? 'Voting...' : 'Loading challenges...' : `Active Challenge${challenges.challenges.length > 1 ? 's' : ''}`}
+                    {`Active Challenge${challenges?.challenges?.length > 1 ? 's' : ''}`}
                 </Text>
             </View>
         </View>
     )
 
-    const footer = !loading && (<TouchableOpacity
+    const footer_ = !loading && (<TouchableOpacity
         style={{ marginVertical: 20, padding: 20, justifyContent: 'center', alignItems: 'center', backgroundColor: loading ? 'grey' : 'coral' }}
         onPress={() => voteToAllChallenges()}
         disabled={loading || refreshing}
@@ -58,8 +63,20 @@ export default function Home() {
         </Text>
     </TouchableOpacity>)
 
+    const footer = (
+        <Button
+            text={voting ? 'Voting...' : 'Vote to all challenges'}
+            onPress={() => voteToAllChallenges()}
+            color={loading || refreshing ? colors.mistyRose : colors.vividTangerine}
+            disabled={loading || refreshing}
+        />
+    )
+
     return (
-        <View style={{ flex: 1 }}>
+        <View style={{
+            flex: 1,
+            backgroundColor: colors.isabelline,
+        }}>
             <FlatList
                 data={challenges.challenges ? challenges.challenges.sort((a, b) => a.close_time - b.close_time) : []}
                 renderItem={({ item }) => <ChallengeCard challenge={item} forceRefresh={(b) => setForceRefresh(b)} />}
@@ -68,7 +85,7 @@ export default function Home() {
                 ListHeaderComponent={header}
                 ListFooterComponent={footer}
                 refreshControl={<RefreshControl refreshing={refreshing} onRefresh={() => {
-                    getActiveChallenges().then((challenges) => {
+                    getActiveChallenges(user).then((challenges) => {
                         setChallenges(challenges)
                         setRefreshing(false)
                     }), setRefreshing(true)

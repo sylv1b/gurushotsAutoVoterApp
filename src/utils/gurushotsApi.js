@@ -1,50 +1,13 @@
 import axios from 'axios'
 
-let user = {
-    user_name: 'sthlmshooter',
-    action: 'signin',
-    token: '1e291aaec1967d51a2889091663edf69b763ed7c1694fdc73962adfbdda1942c5468fe6c7fd82fa94f8e44af22856e65',
-    admin_token: null,
-    member_id: '1078d1c4679a0df5b050fd991baf8b87',
-    is_signup: false,
-    success: true
-}
-
 let userAgent = 'GuruShotsIOS/2.11.6 (com.gurushots.app; build:519; iOS 15.5.0) Alamofire/5.0.0-rc.2';
 let appVersion = '2.11.6'
 
 export const login = async (user, password) => {
-    console.log('start login')
     const data = `login=${encodeURIComponent(user)}&password=${password}`;
 
-    const config = {
-        method: 'post',
-        url: 'https://api.gurushots.com/rest_mobile/signup',
-        headers: {
-            'host': 'api.gurushots.com',
-            'accept': '*/*',
-            'x-device': 'iPhone',
-            'x-requested-with': 'XMLHttpRequest',
-            'x-model': 'iPhone X',
-            'accept-encoding': 'br;q=1.0, gzip;q=0.9, deflate;q=0.8',
-            'accept-language': 'fr-SE;q=1.0, en-SE;q=0.9, sv-SE;q=0.8, es-SE;q=0.7',
-            'x-api-version': '20',
-            'content-type': 'application/x-www-form-urlencoded; charset=utf-8',
-            'x-env': 'IOS',
-            'user-agent': userAgent,
-            'content-length': '50',
-            'x-app-version': appVersion,
-            'connection': 'keep-alive',
-            'x-brand': 'Apple',
-            'cookie': '_clck=av9mgm|1|f0a|0; _fbp=fb.1.1648914330061.2139166727; _uetvid=ecada8d0b29b11ec9459df91e6b99083; _ga=GA1.2.2079901456.1648914330; _ga_PSTKC2YRVK=GS1.1.1648914329.1.0.1648914329.60; mp_web_PoU9JZO1jl_mixpanel=%7B%22distinct_id%22%3A%20%2217feaf3f019ac0-01728b3cf9cec6-744c1451-4a574-17feaf3f01aac2%22%2C%22%24device_id%22%3A%20%2217feaf3f019ac0-01728b3cf9cec6-744c1451-4a574-17feaf3f01aac2%22%2C%22%24initial_referrer%22%3A%20%22%24direct%22%2C%22%24initial_referring_domain%22%3A%20%22%24direct%22%7D; _gcl_au=1.1.254784595.1648914329; _hjSessionUser_2610047=eyJpZCI6IjFjODU1Mzk3LWY5YzMtNWU0Mi1iYzBjLTFlNTdiNjJkZTU0MyIsImNyZWF0ZWQiOjE2NDg5MTQzMjg3MTAsImV4aXN0aW5nIjpmYWxzZX0=',
-            'x-postman-captr': '4102221'
-        },
-        data: data
-    };
-
-    return await axios(config)
+    return await axios.post('signup', data, { headers: { 'content-length': data.length, } })
         .then(function (response) {
-            console.log('login successful')
             return response.data
         })
         .catch(function (error) {
@@ -54,31 +17,15 @@ export const login = async (user, password) => {
 }
 
 
-export const getActiveChallenges = async (user) => {
-    console.log('getting active challenges')
-    var config = {
-        method: 'post',
-        url: 'https://api.gurushots.com/rest_mobile/get_my_active_challenges',
-        headers: {
-            'host': 'api.gurushots.com',
-            'x-device': 'iPhone',
-            'x-requested-with': 'XMLHttpRequest',
-            'x-model': 'iPhone X',
-            'accept-encoding': 'br;q=1.0, gzip;q=0.9, deflate;q=0.8',
-            'x-token': user.token,
-            'x-api-version': '20',
-            'accept-language': 'fr-SE;q=1.0, en-SE;q=0.9, sv-SE;q=0.8, es-SE;q=0.7',
-            'x-env': 'IOS',
-            'user-agent': userAgent,
-            'content-length': '0',
-            'x-app-version': appVersion,
-            'connection': 'keep-alive',
-            'accept': '*/*',
-            'x-brand': 'Apple',
-        }
-    };
-
-    return await axios(config)
+export const getActiveChallenges = async () => {
+    return await axios.post(
+        '/get_my_active_challenges',
+        {},
+        {
+            headers: {
+                'content-length': '0'
+            }
+        })
         .then(function (response) {
             return response.data
         })
@@ -88,39 +35,11 @@ export const getActiveChallenges = async (user) => {
         });
 }
 
-export const getVoteImages = async (challenge, user) => {
-    console.log(`getting vote image of challenge ${challenge.title} ${challenge.url}`)
-    var axios = require('axios');
+export const getVoteImages = async (challenge) => {
     var data = `limit=100&url=${challenge.url}`;
 
-
-    var config = {
-        method: 'post',
-        url: 'https://api.gurushots.com/rest_mobile/get_vote_images',
-        headers: {
-            'host': 'api.gurushots.com',
-            'accept': '*/*',
-            'x-device': 'iPhone',
-            'x-requested-with': 'XMLHttpRequest',
-            'x-model': 'iPhone X',
-            'x-token': user.token,
-            'accept-language': 'fr-SE;q=1.0, en-SE;q=0.9, sv-SE;q=0.8, es-SE;q=0.7',
-            'x-api-version': '20',
-            'accept-encoding': 'br;q=1.0, gzip;q=0.9, deflate;q=0.8',
-            'x-env': 'IOS',
-            'user-agent': userAgent,
-            'content-length': data.length,
-            'x-app-version': appVersion,
-            'connection': 'keep-alive',
-            'content-type': 'application/x-www-form-urlencoded; charset=utf-8',
-            'x-brand': 'Apple',
-        },
-        data: data
-    };
-
-    return await axios(config)
+    return await axios.post('get_vote_images', data, { headers: { 'content-length': data.length } })
         .then(function (response) {
-            console.log('get vote image success')
             return response.data
         })
         .catch(function (error) {
@@ -128,9 +47,10 @@ export const getVoteImages = async (challenge, user) => {
             console.error(error);
         });
 
+
 }
 
-export const submitVotes = async (voteImages, user) => {
+export const submitVotes = async (voteImages) => {
     const { challenge, voting, images } = voteImages;
     if (!images.length) return;
     const id = `c_id=${challenge.id}`
@@ -150,36 +70,10 @@ export const submitVotes = async (voteImages, user) => {
     }
 
     const data = `${id}${votedImages}&layout=scroll${viewdImages}`
-    var axios = require('axios');
-
-    var config = {
-        method: 'post',
-        url: 'https://api.gurushots.com/rest_mobile/submit_vote',
-        headers: {
-            'host': 'api.gurushots.com',
-            'accept': '*/*',
-            'x-device': 'iPhone',
-            'x-requested-with': 'XMLHttpRequest',
-            'x-model': 'iPhone X',
-            'x-token': user.token,
-            'accept-language': 'fr-SE;q=1.0, en-SE;q=0.9, sv-SE;q=0.8, es-SE;q=0.7',
-            'x-api-version': '20',
-            'accept-encoding': 'br;q=1.0, gzip;q=0.9, deflate;q=0.8',
-            'x-env': 'IOS',
-            'user-agent': userAgent,
-            'content-length': data.length,
-            'x-app-version': appVersion,
-            'connection': 'keep-alive',
-            'content-type': 'application/x-www-form-urlencoded; charset=utf-8',
-            'x-brand': 'Apple',
-        },
-        data: data
-    };
 
 
-    return await axios(config)
+    return await axios.post('submit_vote', data, { headers: { 'content-length': data.length } })
         .then(function (response) {
-            console.log('submit votes success')
             return {
                 data,
                 response: response.data
@@ -192,11 +86,7 @@ export const submitVotes = async (voteImages, user) => {
 }
 
 
-export const fetchChallengesAndVote = async (user) => {
-    if (!user.token) {
-        const userLogin = await login('sbro@me.com', '4gJhnojcBH7EDnmqf7aby')
-        user = userLogin
-    }
+export const fetchChallengesAndVote = async () => {
     const activesChallenges = await getActiveChallenges()
     const { challenges } = activesChallenges
     const now = Math.floor(Date.now() / 1000)
