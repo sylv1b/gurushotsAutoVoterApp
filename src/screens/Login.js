@@ -1,4 +1,4 @@
-import { View, Text, Dimensions, ActivityIndicator } from 'react-native'
+import { View, Dimensions, ActivityIndicator } from 'react-native'
 import React, { useState } from 'react'
 import {
     TextField,
@@ -62,8 +62,9 @@ export default function Login() {
                 <Button
                     text="Login"
                     onPress={onButtonPressed}
-                    color={colors.vividTangerine}
+                    color='black'
                     disabled={isFetching}
+                    hideIcon
                 />
                 {isFetching && <ActivityIndicator
                     style={{

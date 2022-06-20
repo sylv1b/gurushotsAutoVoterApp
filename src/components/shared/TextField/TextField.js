@@ -25,10 +25,10 @@ const TextField = ({
                 style={{
                     backgroundColor: color,
                     height: 50,
-                    borderColor: colors.brownSugar,
+                    borderColor: 'black',
                     borderWidth: 1,
                     borderRadius: 4,
-                    padding: 5,
+                    padding: 15,
                     color: colors.text
                 }}
             />

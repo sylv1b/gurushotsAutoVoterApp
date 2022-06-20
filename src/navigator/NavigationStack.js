@@ -3,13 +3,11 @@ import { createNativeStackNavigator } from '@react-navigation/native-stack'
 import Home from '../screens/Home'
 import Login from '../screens/Login'
 import { useSelector, useDispatch } from 'react-redux';
-import { getCurrentUser, loginUser, logoutUser } from '../store/actions/authActions';
-import { Appearance } from 'react-native'
+import { getCurrentUser, logoutUser } from '../store/actions/authActions';
 import colors from '../styles/colors';
+import Icon from 'react-native-vector-icons/MaterialCommunityIcons'
 export default function NavigationStack() {
     const dispatch = useDispatch();
-    const colorScheme = Appearance.getColorScheme();
-    const isDark = colorScheme === 'dark';
     const [isReady, setIsReady] = useState(false);
     const Stack = createNativeStackNavigator();
     const { auth } = useSelector(state => state);
@@ -31,15 +29,29 @@ export default function NavigationStack() {
                         options={{
                             headerTitle: 'Your challenges',
                             headerStyle: {
-                                backgroundColor: isDark ? colors.lightGrey : colors.isabelline,
+                                backgroundColor: colors.isabelline,
                             }, headerTitleStyle: {
-                                color: isDark ? colors.isabelline : colors.text,
-                            }
+                                color: colors.text,
+                            },
+                            headerRight: () => (
+                                <Icon.Button
+                                    name="exit-to-app"
+                                    size={25}
+                                    color='black'
+                                    onPress={() => {
+                                        dispatch(logoutUser())
+                                    }}
+                                    backgroundColor={colors.isabelline}
+                                />
+                            ),
                         }} />
                 </>
             ) :
                 (
-                    <Stack.Screen name="Login" component={Login} />
+                    <Stack.Screen name="Login" component={Login} options={{
+                        // hide header
+                        headerShown: false,
+                    }} />
                 )
             }
         </Stack.Navigator>

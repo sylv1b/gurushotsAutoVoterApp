@@ -1,11 +1,10 @@
-import { View, Text, FlatList, TouchableOpacity, RefreshControl, Appearance, ActivityIndicator } from 'react-native'
+import { View, Text, FlatList, TouchableOpacity, RefreshControl } from 'react-native'
 import React, { useEffect, useState } from 'react'
 import { fetchChallengesAndVote, getActiveChallenges } from '../utils/gurushotsApi'
 import ChallengeCard from '../components/ChallengeCard'
-import { useSelector, useDispatch } from 'react-redux'
+import { useSelector } from 'react-redux'
 import colors from '../styles/colors'
 import {
-    TextField,
     Button
 } from '../components/shared'
 
@@ -15,9 +14,7 @@ export default function Home() {
     const [loading, setLoading] = useState(true)
     const [refreshing, setRefreshing] = useState(false)
     const [voting, setVoting] = useState(false)
-    const colorScheme = Appearance.getColorScheme();
     const [forceRefresh, setForceRefresh] = useState(false)
-    const isDark = colorScheme === 'dark';
 
     useEffect(() => {
         if (!challenges.challenges || forceRefresh) {
@@ -30,6 +27,8 @@ export default function Home() {
             setForceRefresh(false)
         }
     }, [challenges, forceRefresh])
+
+    console.log(challenges)
 
     const voteToAllChallenges = async () => {
         setVoting(true)
@@ -46,7 +45,7 @@ export default function Home() {
     const header = (
         <View style={{ paddingHorizontal: 8, marginVertical: 12 }}>
             <View style={{ flexDirection: 'row', height: 60, justifyContent: 'space-between', alignItems: 'center', }}>
-                <Text style={{ fontSize: 18, fontWeight: 'bold', color: isDark ? 'white' : 'black' }}>
+                <Text style={{ fontSize: 18, fontWeight: 'bold', color: 'black' }}>
                     {`Active Challenge${challenges?.challenges?.length > 1 ? 's' : ''}`}
                 </Text>
             </View>
@@ -64,33 +63,40 @@ export default function Home() {
     </TouchableOpacity>)
 
     const footer = (
-        <Button
-            text={voting ? 'Voting...' : 'Vote to all challenges'}
-            onPress={() => voteToAllChallenges()}
-            color={loading || refreshing ? colors.mistyRose : colors.vividTangerine}
-            disabled={loading || refreshing}
-        />
+        <View style={{ marginBottom: 40 }}>
+            <Button
+                text={voting ? 'Voting...' : `Vote to all ${challenges.challenges?.length} challenge${challenges.challenges?.length > 1 ? 's' : ''}`}
+                onPress={() => voteToAllChallenges()}
+                color={loading || refreshing ? 'rgba(0,0,0,0.5)' : 'black'}
+                disabled={loading || refreshing}
+            />
+        </View>
     )
 
     return (
         <View style={{
             flex: 1,
-            backgroundColor: isDark ? colors.darkGrey : colors.isabelline,
+            backgroundColor: 'black',
         }}>
-            <FlatList
+            {challenges.challenges ? <FlatList
                 data={challenges.challenges ? challenges.challenges.sort((a, b) => a.close_time - b.close_time) : []}
                 renderItem={({ item }) => <ChallengeCard challenge={item} forceRefresh={(b) => setForceRefresh(b)} />}
                 keyExtractor={item => item.id}
-                //ItemSeparatorComponent={() => <View style={{ height: 10, backgroundColor: colors.polishedPine }} />}
-                //ListHeaderComponent={header}
                 ListFooterComponent={footer}
-                refreshControl={<RefreshControl refreshing={refreshing} onRefresh={() => {
+                refreshControl={<RefreshControl refreshing={refreshing} tintColor={'white'} onRefresh={() => {
                     getActiveChallenges(user).then((challenges) => {
                         setChallenges(challenges)
                         setRefreshing(false)
                     }), setRefreshing(true)
                 }} />}
-            />
+            /> : <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
+                <Text style={{ fontSize: 24, fontWeight: 'bold', color: 'white' }}>
+                    No Active Challenges
+                </Text>
+                <Text style={{ fontSize: 16, color: 'white', textAlign: 'center' }}>
+                    Go to GS app to enroll to challenges, then come back here to vote.
+                </Text>
+            </View>}
         </View>
     )
 }
