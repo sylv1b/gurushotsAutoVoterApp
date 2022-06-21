@@ -1,4 +1,4 @@
-import { View, Text, Image, Appearance, TouchableOpacity, Dimensions, ActivityIndicator } from 'react-native'
+import { View, Text, Image, TouchableOpacity, Dimensions, ActivityIndicator } from 'react-native'
 import React, { useState } from 'react'
 import moment from 'moment'
 import { getVoteImages, submitVotes } from '../utils/gurushotsApi'
@@ -16,9 +16,6 @@ export default function ChallengeCard({ challenge, forceRefresh }) {
     console.log('ChallengeCard', challenge)
 
     const [isVoting, setIsVoting] = useState(false)
-
-    const colorScheme = Appearance.getColorScheme();
-    const isDark = colorScheme === 'dark';
 
     const { id, member } = challenge.image
     const memberScore = challenge.member.ranking.total
