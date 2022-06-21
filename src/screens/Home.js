@@ -7,10 +7,12 @@ import colors from '../styles/colors'
 import {
     Button
 } from '../components/shared'
+import LoadingOverlay from '../components/shared/LoadingOverlay/LoadingOverlay'
 
 export default function Home() {
     const { user } = useSelector(state => state.auth)
     const [challenges, setChallenges] = useState({})
+    const [hasFetched, setHasFetched] = useState(false)
     const [loading, setLoading] = useState(true)
     const [refreshing, setRefreshing] = useState(false)
     const [voting, setVoting] = useState(false)
@@ -23,12 +25,11 @@ export default function Home() {
                     setChallenges(challenges)
                     setLoading(false)
                     setRefreshing(false)
+                    setHasFetched(true)
                 })
             setForceRefresh(false)
         }
     }, [challenges, forceRefresh])
-
-    console.log(challenges)
 
     const voteToAllChallenges = async () => {
         setVoting(true)
@@ -72,6 +73,12 @@ export default function Home() {
             />
         </View>
     )
+
+    if (!hasFetched) {
+        return (
+            <LoadingOverlay text='Loading challenges...' />
+        )
+    }
 
     return (
         <View style={{

@@ -13,8 +13,6 @@ export default function ChallengeCard({ challenge, forceRefresh }) {
     const WIDTH = width - (MARGIN * 2)
     const { entries } = challenge.member.ranking
 
-    console.log('ChallengeCard', challenge)
-
     const [isVoting, setIsVoting] = useState(false)
 
     const { id, member } = challenge.image
@@ -33,6 +31,8 @@ export default function ChallengeCard({ challenge, forceRefresh }) {
             setIsVoting(false)
         })
     }
+
+    const exposureFactor = challenge.member.ranking.exposure.exposure_factor
 
     return (
         <View style={{
@@ -67,7 +67,6 @@ export default function ChallengeCard({ challenge, forceRefresh }) {
                         borderWidth: 1
                     }}
                     onPress={() => vote()}
-                    disabled={isVoting}
                 >
                     {isVoting ? <ActivityIndicator /> : <Icon name='vote-outline' size={60} color='white' />}
                     {!isVoting && <Text style={{ color: 'white' }}>Vote</Text>}
@@ -90,6 +89,8 @@ export default function ChallengeCard({ challenge, forceRefresh }) {
                         borderTopWidth: 1,
                         overflow: 'hidden',
                     }}>
+                        {entry.guru_pick && <Icon name='star' size={20} color='gold' style={{ position: 'absolute', top: 6, right: 6, zIndex: 1000 }} />}
+                        {entry.boosted && <Icon name='rocket-launch' size={entry.boosting ? 25 : 20} color='white' style={{ position: 'absolute', top: 6, left: 6, zIndex: 1000 }} />}
                         <Image
                             source={{ uri: `https://photos.gurushots.com/unsafe/500x500/${entry.member_id}/3_${entry.id}.jpg` }}
                             style={{
@@ -106,18 +107,33 @@ export default function ChallengeCard({ challenge, forceRefresh }) {
                                 padding: 4,
                                 backgroundColor: 'rgba(0,0,0,0.5)'
                             }}>
-                            <Text style={{ fontSize: 9, color: colors.isabelline }}>Rank {entry.rank}</Text>
                             <Text style={{ fontSize: 9, color: colors.isabelline }}>{entry.votes} votes</Text>
+                            <Text style={{ fontSize: 9, color: colors.isabelline }}>Rank {entry.rank}</Text>
                         </View>
                     </View>
                 ))}
             </View>
             <View style={{ flexDirection: 'row', }} >
                 <View style={{ padding: 8, borderColor: boostAvailable ? 'green' : 'white', borderWidth: boostAvailable ? 2 : 0 }}>
-                    <Text style={{ fontSize: 12, color: colors.text }}>Exposure factor: {challenge.member.ranking.exposure.exposure_factor}</Text>
-                    <Text style={{ fontSize: 12, color: colors.text }}>Rank: {memberScore.level_name} ({memberScore.next_message})</Text>
-                    <Text style={{ fontSize: 12, color: colors.text }}>Ends at: {moment.unix(challenge.close_time).format('YYYY-MM-DD HH:MM')}</Text>
-                    <Text style={{ fontSize: 12, color: colors.text }}>Your score: {memberScore.votes} votes</Text>
+                    <View style={{ flexDirection: 'row', alignItems: 'center', paddingVertical: 2 }}>
+                        <Icon name='vote-outline' size={20} color={'black'} />
+                        <Text style={{ fontSize: 12, color: 'black', marginLeft: 4 }}>Your score: {memberScore.votes} votes</Text>
+                    </View>
+                    <View style={{ flexDirection: 'row', alignItems: 'center', paddingVertical: 2 }}>
+                        {exposureFactor > 50 && <Icon name='speedometer' size={20} color={'black'} />}
+                        {exposureFactor === 50 && <Icon name='speedometer-medium' size={20} color={'black'} />}
+                        {exposureFactor < 50 && <Icon name='speedometer-slow' size={20} color={'black'} />}
+                        <Text style={{ fontSize: 12, color: 'black', marginLeft: 4 }}>Exposure factor: {exposureFactor}</Text>
+                    </View>
+                    <View style={{ flexDirection: 'row', alignItems: 'center', paddingVertical: 2 }}>
+                        <Icon name='slope-uphill' size={20} color={'black'} />
+                        <Text style={{ fontSize: 12, color: 'black', marginLeft: 4 }}>Rank: {memberScore.level_name} ({memberScore.next_message})</Text>
+                    </View>
+
+                    <View style={{ flexDirection: 'row', alignItems: 'center', paddingVertical: 2 }}>
+                        <Icon name='clock-time-eight-outline' size={20} color={'black'} />
+                        <Text style={{ fontSize: 12, color: 'black', marginLeft: 4 }}>Ends at: {moment.unix(challenge.close_time).format('YYYY-MM-DD HH:MM')}</Text>
+                    </View>
                 </View>
             </View>
         </View >
