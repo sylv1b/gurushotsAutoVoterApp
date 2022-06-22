@@ -1,4 +1,4 @@
-import { View, Dimensions, ActivityIndicator } from 'react-native'
+import { View, Dimensions, Text } from 'react-native'
 import React, { useState } from 'react'
 import {
     TextField,
@@ -35,12 +35,15 @@ export default function Login() {
                 style={{
                     width: width - 18,
                     height: width - 18,
+                    justifyContent: 'center',
                 }}
                 onLayout={(event) => {
                     const { y, } = event.nativeEvent.layout
                     setFormPosition(y)
                 }}
             >
+                <Text style={{ textAlign: 'center', marginBottom: 30, fontSize: 18 }}>Login with your Gurushots credentials</Text>
+
                 <TextField
                     title="Email"
                     value={email}

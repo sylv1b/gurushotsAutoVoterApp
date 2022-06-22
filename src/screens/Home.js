@@ -1,8 +1,9 @@
-import { View, Text, FlatList, TouchableOpacity, RefreshControl } from 'react-native'
+import { View, Text, FlatList, TouchableOpacity, RefreshControl, ActivityIndicator } from 'react-native'
 import React, { useEffect, useState } from 'react'
 import { fetchChallengesAndVote, getActiveChallenges } from '../utils/gurushotsApi'
 import ChallengeCard from '../components/ChallengeCard'
 import { useSelector } from 'react-redux'
+import Icon from 'react-native-vector-icons/MaterialCommunityIcons'
 import colors from '../styles/colors'
 import {
     Button
@@ -43,35 +44,8 @@ export default function Home() {
         })
     }
 
-    const header = (
-        <View style={{ paddingHorizontal: 8, marginVertical: 12 }}>
-            <View style={{ flexDirection: 'row', height: 60, justifyContent: 'space-between', alignItems: 'center', }}>
-                <Text style={{ fontSize: 18, fontWeight: 'bold', color: 'black' }}>
-                    {`Active Challenge${challenges?.challenges?.length > 1 ? 's' : ''}`}
-                </Text>
-            </View>
-        </View>
-    )
-
-    const footer_ = !loading && (<TouchableOpacity
-        style={{ marginVertical: 20, padding: 20, justifyContent: 'center', alignItems: 'center', backgroundColor: loading ? 'grey' : 'coral' }}
-        onPress={() => voteToAllChallenges()}
-        disabled={loading || refreshing}
-    >
-        <Text style={{ fontSize: 12, fontWeight: 'bold', color: 'white' }}>
-            Vote to all challenges
-        </Text>
-    </TouchableOpacity>)
-
     const footer = (
-        <View style={{ marginBottom: 40 }}>
-            <Button
-                text={voting ? 'Voting...' : `Vote to all ${challenges.challenges?.length} challenge${challenges.challenges?.length > 1 ? 's' : ''}`}
-                onPress={() => voteToAllChallenges()}
-                color={loading || refreshing ? 'rgba(0,0,0,0.5)' : 'black'}
-                disabled={loading || refreshing}
-            />
-        </View>
+        <View style={{ marginBottom: 40 }} />
     )
 
     if (!hasFetched) {
@@ -85,25 +59,52 @@ export default function Home() {
             flex: 1,
             backgroundColor: 'black',
         }}>
-            {challenges.challenges ? <FlatList
-                data={challenges.challenges ? challenges.challenges.sort((a, b) => a.close_time - b.close_time) : []}
-                renderItem={({ item }) => <ChallengeCard challenge={item} forceRefresh={(b) => setForceRefresh(b)} />}
-                keyExtractor={item => item.id}
-                ListFooterComponent={footer}
-                refreshControl={<RefreshControl refreshing={refreshing} tintColor={'white'} onRefresh={() => {
-                    getActiveChallenges(user).then((challenges) => {
-                        setChallenges(challenges)
-                        setRefreshing(false)
-                    }), setRefreshing(true)
-                }} />}
-            /> : <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
-                <Text style={{ fontSize: 24, fontWeight: 'bold', color: 'white' }}>
-                    No Active Challenges
-                </Text>
-                <Text style={{ fontSize: 16, color: 'white', textAlign: 'center' }}>
-                    Go to GS app to enroll to challenges, then come back here to vote.
-                </Text>
-            </View>}
+            {challenges.challenges ?
+                <><FlatList
+                    data={challenges.challenges ? challenges.challenges.sort((a, b) => a.close_time - b.close_time) : []}
+                    renderItem={({ item }) => <ChallengeCard challenge={item} forceRefresh={(b) => setForceRefresh(b)} />}
+                    keyExtractor={item => item.id}
+                    ListFooterComponent={footer}
+                    refreshControl={<RefreshControl refreshing={refreshing} tintColor={'white'} onRefresh={() => {
+                        getActiveChallenges(user).then((challenges) => {
+                            setChallenges(challenges)
+                            setRefreshing(false)
+                        }), setRefreshing(true)
+                    }} />}
+                />
+                    <TouchableOpacity
+                        style={{
+                            position: 'absolute',
+                            bottom: 20,
+                            right: 20,
+                            width: 90,
+                            height: 90,
+                            backgroundColor: 'rgb(0,0,0)',
+                            borderRadius: 45,
+                            justifyContent: 'center',
+                            alignItems: 'center',
+                            borderColor: 'white',
+                            borderWidth: 2
+                        }}
+                        onPress={() => voteToAllChallenges()}
+                        disabled={loading || refreshing}
+                    >
+                        {!voting ?
+                            <>
+                                <Icon name='vote-outline' size={40} color='white' />
+                                <Text style={{ color: 'white', fontSize: 10 }}>{voting ? 'Voting...' : `Vote to all`}</Text>
+                            </>
+                            : <ActivityIndicator />}
+                    </TouchableOpacity>
+                </>
+                : <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
+                    <Text style={{ fontSize: 24, fontWeight: 'bold', color: 'white' }}>
+                        No Active Challenges
+                    </Text>
+                    <Text style={{ fontSize: 16, color: 'white', textAlign: 'center' }}>
+                        Go to GS app to enroll to challenges, then come back here to vote.
+                    </Text>
+                </View>}
         </View>
     )
 }
