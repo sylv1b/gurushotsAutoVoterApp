@@ -1,0 +1,3 @@
+{
+  "extends": "medpeople/react-native"
+}
